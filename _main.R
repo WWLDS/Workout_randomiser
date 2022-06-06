@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
 })
 lint("_main.R")
 style_file("_main.R")
-day = "quads"
+day = "triceps"
 # Create lists of exercises ----------------------------------------------------
 quads <- c("Back squat", "Front squat", "Goblet squat", "Incline leg press", 
            "Hack squat", "Leg extension", "Weighted lunges", "Weighted step up")
@@ -45,12 +45,16 @@ colnames(table_formation) <- headers
 
 
 curls <- c("Plate", "Dumbell")
-accessory_muscle <- c("Forearms", "Abs", "Obliques", "Calves")
+accessory_muscle <- c("Forearms", "Abs", "Obliques", "Calves") %>%
+        as_tibble()
 gradient <- c("Incline", "Flat", "Decline")
-cable_bar_type <- c("Rope", "Triangle", "Handle", "Straight bar")
+cable_bar_type <- c("Rope", "Triangle", "Handle", "Straight bar") %>%
+        as_tibble()
 bar_or_dumb <- c("Bar", "Dumbell")
 
 rand_selection <- table_formation %>%
         select(.GlobalEnv$day) %>%
-        sample_n(3)
+        filter(!(is.na(.))) %>%
+        slice_sample(n = 3)
         
+test <- sample_n(cable_bar_type,1)
