@@ -5,10 +5,12 @@ suppressPackageStartupMessages({
      library(here)
      library(lintr)
      library(styler)
+     library(renv)
 })
 lint("_main.R")
 style_file("_main.R")
-day = "triceps"
+# day = "triceps"
+
 # Create lists of exercises ----------------------------------------------------
 quads <- c("Back squat", "Front squat", "Goblet squat", "Incline leg press", 
            "Hack squat", "Leg extension", "Weighted lunges", "Weighted step up")
@@ -43,7 +45,7 @@ table_formation <- map_dfr(body_parts, ~as_tibble(t(.))) %>%
      as_tibble()
 colnames(table_formation) <- headers
 
-
+# Randomisation ----------------------------------------------------------------
 curls <- c("Plate", "Dumbell")
 accessory_muscle <- c("Forearms", "Abs", "Obliques", "Calves") %>%
         as_tibble()
