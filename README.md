@@ -9,3 +9,7 @@ To start with - don't have if/or. Just have it spit out the randomisation for ea
 So have a function that runs over every body part and randomises, then does it for accessory, cable type, etc.
 Then email it out.
 After that I will make it more specific to the day?
+
+07JUNE2022
+To do:
+Create fun to loop through and slice 3 from each column. And one from the others. Work out how to do this.
