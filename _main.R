@@ -6,7 +6,9 @@ suppressPackageStartupMessages({
   library(lintr)
   library(styler)
   library(renv)
-  library(emayili)
+  library(gt)
+  library(webshot)
+  library(magick)
 })
 lint("_main.R")
 style_file("_main.R")
@@ -17,19 +19,18 @@ quads <- c(
   "Hack squat", "Leg extension", "Weighted lunges", "Weighted step up"
 )
 hamstrings <- c(
-  "Good morning - bar", "Good morning - dumbbells",
-  "Good morning - hex bar", "High foot incline leg press",
-  "Leg curls"
+  "Good morning", "High foot incline leg press",
+  "Leg curls", "Romanian deadlift", "Back squat", "Tight bum"
 )
 back <- c(
-  "Deadlift", "Deadlift", "Rows", "T-bar lift", "Pull up", "Chin up",
-  "One arm dumbbell row", "Machine pulldown - long bar",
-  "Machine row - long bar", "Machine row - triangle bar",
-  "Seated horizontal pull - machine", "Seated horizontal pull - plates"
+  "Deadlift", "Rows", "T-bar lift", "Pull up", "Chin up",
+  "One arm dumbbell row", "Machine pulldown",
+  "Machine row",
+  "Seated horizontal pull"
 )
 chest <- c(
-  "Bench press", "dumbbell bench press", "dumbbell Fly",
-  "Barbell bench press - alternate grip", "Cable Fly", "Machine fly",
+  "Bench press", "dumbbell Fly",
+  "Dumbell bench press - alternate grip", "Cable Fly", "Machine fly",
   "Machine perpendicular arm fly", "Machine press"
 )
 shoulders <- c(
@@ -51,7 +52,7 @@ triceps <- c(
 curls <- c("Plate", "dumbbell")
 accessory_muscle <- c("Forearms", "Abs", "Obliques", "Calves")
 gradient <- c("Incline", "Flat", "Decline")
-cable_bar_type <- c("Rope", "Triangle", "Handle", "Straight bar")
+cable_bar_type <- c("Rope", "Triangle", "Handle", "Straight bar", "Long straight bar")
 bar_or_dumb <- c("Bar", "dumbbell")
 
 # Create table of exercises by body part ---------------------------------------
@@ -94,14 +95,21 @@ table_gather <- table_formation %>%
   select(-1)
 
 body_table <- table_gather %>%
-  select(2,4,6,9:11,13)
+  select(2, 4, 6, 9:11, 13) %>%
+  gt() %>%
+  gtsave("workout.png")
 
 accessory_table <- table_gather %>%
-  select(1,3,5,7,8,12) %>%
-  drop_na()
-  
+  select(1, 3, 5, 7, 8, 12) %>%
+  drop_na() %>%
+  gt() %>%
+  gtsave("workout2.png")
 
-# spread the tables? Make two tables = one with body parts and the other with
-# additional stuff
-# then learn how to get it to email it to me
-# then schedule daily
+library(cowplot)
+tbl_one <- ggdraw() + draw_image("workout.png", scale = 1.0)
+tbl_two <- ggdraw() + draw_image("workout2.png", scale = 0.6)
+comb_plot <- plot_grid(tbl_one, tbl_two, ncol = 1)
+save_plot(
+  plot = comb_plot, "C:/Users/INGRAM_T/Dropbox/R/Workout/workout.png",
+  dpi = 300, base_width = 16, base_height = 12
+)
