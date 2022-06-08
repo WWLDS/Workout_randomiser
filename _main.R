@@ -1,4 +1,3 @@
-set.seed(100)
 # Pkg load ---------------------------------------------------------------------
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -76,11 +75,11 @@ table_gather <- table_formation %>%
   gather(body_part, exercise) %>%
   mutate(freq = case_when(
     grepl(
-      "Quads|Hamstrings|Back|Chest|Shoulders|Traps|Biceps|Triceps",
+      "Quads|Hamstrings|Back|Chest|Shoulders|Biceps|Triceps",
       body_part
     ) ~ "3",
     grepl(
-      "Curls|Accessory_muscle|Gradient|Cable_bar_type|Bar_or_dumb",
+      "Curls|Accessory_muscle|Gradient|Cable_bar_type|Traps|Bar_or_dumb",
       body_part
     ) ~ "1"
   )) %>%
@@ -95,10 +94,10 @@ table_gather <- table_formation %>%
   select(-1)
 
 body_table <- table_gather %>%
-  select(2,4,6,9:13)
+  select(2,4,6,9:11,13)
 
 accessory_table <- table_gather %>%
-  select(1,3,5,7,8) %>%
+  select(1,3,5,7,8,12) %>%
   drop_na()
   
 
