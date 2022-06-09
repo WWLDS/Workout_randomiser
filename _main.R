@@ -11,8 +11,8 @@ suppressPackageStartupMessages({
   library(magick)
   library(cowplot)
 })
-lint("_main.R")
-style_file("_main.R")
+# lint("_main.R")
+# style_file("_main.R")
 
 # Create lists of exercises ----------------------------------------------------
 quads <- c(
@@ -31,7 +31,7 @@ back <- c(
 chest <- c(
   "Bench press", "Bench fly",
   "Dumbbell bench press - alt grip", "Cable Fly",
-  "Machine perpendicular arm fly", "Machine press", "Dips"
+  "Pec deck", "Machine press", "Dips"
 )
 shoulders <- c(
   "Shoulder press", "Arnold press", "Side raises - upright",
@@ -44,21 +44,24 @@ biceps <- c(
   "Cable hammer"
 )
 triceps <- c(
-  "Cable - high start", "Cable - low start", "Dips", "Behind the head dumbbell", 
-  "Skullcrusher", "Close grip bench press"
+  "Cable - high start", "Cable - low start", "Dips",
+  "Behind the head", "Skullcrusher", "Close grip bench press"
 )
 curls <- c("Plate", "Dumbbell")
 accessory_muscle <- c("Abs", "Obliques", "Calves")
 gradient <- c("Incline", "Flat", "Decline")
-cable_bar_type <- c("Rope", "Triangle", "Handle", "Straight bar", 
-                    "Long straight bar")
-bar_or_dumb <- c("Bar", "dumbbell")
+cable_bar_type <- c(
+  "Rope", "Triangle", "Handle", "Straight bar",
+  "Long straight bar"
+)
+bar_or_dumb <- c("Bar", "Dumbbell")
+rest <- c("Thirty", "Forty-five", "Sixty")
 
 # Create table of exercises by body part ---------------------------------------
 body_parts <- list(
   quads, hamstrings, back, chest, shoulders, traps, biceps,
   triceps, curls, accessory_muscle, gradient, cable_bar_type,
-  bar_or_dumb
+  bar_or_dumb, rest
 )
 table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
   t() %>%
@@ -66,12 +69,12 @@ table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
 headers <- c(
   "Quads", "Hamstrings", "Back", "Chest", "Shoulders", "Traps",
   "Biceps", "Triceps", "Curls", "Accessory muscle", "Gradient",
-  "Cable attachment", "Bar or dumbbell"
+  "Cable attachment", "Bar or dumbbell", "Rest"
 )
 colnames(table_formation) <- headers
 
-# Gather variables and random sample; output as gt object ----------------------
-table_gather <- table_formation %>%
+# Gather variables then take random sample; output as gt object ----------------
+rand_workout <- table_formation %>%
   gather(body_part, exercise) %>%
   mutate(freq = case_when(
     grepl(
@@ -79,7 +82,7 @@ table_gather <- table_formation %>%
       body_part
     ) ~ "3",
     grepl(
-      "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell",
+      "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell|Rest",
       body_part
     ) ~ "1"
   )) %>%
@@ -89,26 +92,32 @@ table_gather <- table_formation %>%
   sample_n(freq[2], replace = F) %>%
   arrange(desc(freq)) %>%
   mutate(row = 1:n()) %>%
-  pivot_wider(names_from = row,
-              values_from = exercise) %>%
+  pivot_wider(
+    names_from = row,
+    values_from = exercise
+  ) %>%
   lapply(function(x) gsub("3", "Muscle group", x)) %>%
   lapply(function(y) gsub("1", "Additional variable", y)) %>%
   as_tibble() %>%
-  mutate_all(~replace(., is.na(.), "-")) %>%
-  rename("Subheading" = freq,
-         "Variable" = body_part,
-         "Exercise 1" = `1`,
-         "Exercise 2" = `2`,
-         "Exercise 3" = `3`) %>%
-  gt(groupname_col = "Subheading",
-     rowname_col = "Variable") %>%
+  mutate_all(~ replace(., is.na(.), "-")) %>%
+  rename(
+    "Subheading" = freq,
+    "Variable" = body_part,
+    "Exercise 1" = `1`,
+    "Exercise 2" = `2`,
+    "Exercise 3" = `3`
+  ) %>%
+  gt(
+    groupname_col = "Subheading",
+    rowname_col = "Variable"
+  ) %>%
   opt_table_lines(extent = "none") %>%
   tab_style(
     style = list(
       cell_text(weight = "bold")
     ),
     locations = cells_row_groups()
-  ) %>% 
+  ) %>%
   opt_table_lines(extent = "default") %>%
   tab_options(
     column_labels.border.top.color = "white",
@@ -118,6 +127,13 @@ table_gather <- table_formation %>%
     table.border.bottom.color = "white",
     table.border.bottom.width = px(3)
   )
-
-# Export plot into Dropbox folder ----------------------------------------------
-gtsave(table_gather, "C:/Users/INGRAM_T/Dropbox/R/Workout/workout.png")
+rand_workout
+# Export table into Dropbox and local folders ----------------------------------
+date <- Sys.Date()
+gtsave(table_gather, paste("C:/Users/INGRAM_T/Dropbox/Daily_workout/", date + 1,
+  "_session.png",
+  sep = ""
+))
+gtsave(table_gather, here("archive_workouts", paste(date + 1, "_session.png",
+  sep = ""
+)))

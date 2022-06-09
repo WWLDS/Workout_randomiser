@@ -1,6 +1,10 @@
 08JUNE2022:
-- Make table nicer
 - here for temp_images
 - clean up code
 - save each file with todays date too, so all files saved each day
+COMPLETE
+
+09JUNE2022:
 - function that runs the randomiser for next seven days and outputs seven files to Dropbox
+- add bum "additional variable"
+
