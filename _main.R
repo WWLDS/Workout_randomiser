@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
   library(cowplot)
 })
 # lint("_main.R")
-# style_file("_main.R")
+style_file("_main.R")
 
 # Create lists of exercises ----------------------------------------------------
 quads <- c(
@@ -74,66 +74,72 @@ headers <- c(
 colnames(table_formation) <- headers
 
 # Gather variables then take random sample; output as gt object ----------------
-rand_workout <- table_formation %>%
-  gather(body_part, exercise) %>%
-  mutate(freq = case_when(
-    grepl(
-      "Quads|Hamstrings|Back|Chest|Shoulders|Biceps|Triceps",
-      body_part
-    ) ~ "3",
-    grepl(
-      "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell|Rest",
-      body_part
-    ) ~ "1"
-  )) %>%
-  mutate(freq = as.numeric(freq)) %>%
-  filter(!(is.na(exercise))) %>%
-  group_by(body_part) %>%
-  sample_n(freq[2], replace = F) %>%
-  arrange(desc(freq)) %>%
-  mutate(row = 1:n()) %>%
-  pivot_wider(
-    names_from = row,
-    values_from = exercise
-  ) %>%
-  lapply(function(x) gsub("3", "Muscle group", x)) %>%
-  lapply(function(y) gsub("1", "Additional variable", y)) %>%
-  as_tibble() %>%
-  mutate_all(~ replace(., is.na(.), "-")) %>%
-  rename(
-    "Subheading" = freq,
-    "Variable" = body_part,
-    "Exercise 1" = `1`,
-    "Exercise 2" = `2`,
-    "Exercise 3" = `3`
-  ) %>%
-  gt(
-    groupname_col = "Subheading",
-    rowname_col = "Variable"
-  ) %>%
-  opt_table_lines(extent = "none") %>%
-  tab_style(
-    style = list(
-      cell_text(weight = "bold")
-    ),
-    locations = cells_row_groups()
-  ) %>%
-  opt_table_lines(extent = "default") %>%
-  tab_options(
-    column_labels.border.top.color = "white",
-    column_labels.border.top.width = px(3),
-    column_labels.border.bottom.color = "black",
-    table_body.hlines.color = "white",
-    table.border.bottom.color = "white",
-    table.border.bottom.width = px(3)
-  )
-rand_workout
-# Export table into Dropbox and local folders ----------------------------------
-date <- Sys.Date()
-gtsave(table_gather, paste("C:/Users/INGRAM_T/Dropbox/Daily_workout/", date + 1,
-  "_session.png",
-  sep = ""
-))
-gtsave(table_gather, here("archive_workouts", paste(date + 1, "_session.png",
-  sep = ""
-)))
+# Function outputs next seven days of WO sessions ----
+x <- 1
+while (x < 8) {
+  rand_workout <- table_formation %>%
+    gather(body_part, exercise) %>%
+    mutate(freq = case_when(
+      grepl(
+        "Quads|Hamstrings|Back|Chest|Shoulders|Biceps|Triceps",
+        body_part
+      ) ~ "3",
+      grepl(
+        "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell|Rest",
+        body_part
+      ) ~ "1"
+    )) %>%
+    mutate(freq = as.numeric(freq)) %>%
+    filter(!(is.na(exercise))) %>%
+    group_by(body_part) %>%
+    sample_n(freq[2], replace = F) %>%
+    arrange(desc(freq)) %>%
+    mutate(row = 1:n()) %>%
+    pivot_wider(
+      names_from = row,
+      values_from = exercise
+    ) %>%
+    lapply(function(x) gsub("3", "Muscle group", x)) %>%
+    lapply(function(y) gsub("1", "Additional variable", y)) %>%
+    as_tibble() %>%
+    mutate_all(~ replace(., is.na(.), "-")) %>%
+    rename(
+      "Subheading" = freq,
+      "Variable" = body_part,
+      "Exercise 1" = `1`,
+      "Exercise 2" = `2`,
+      "Exercise 3" = `3`
+    ) %>%
+    gt(
+      groupname_col = "Subheading",
+      rowname_col = "Variable"
+    ) %>%
+    opt_table_lines(extent = "none") %>%
+    tab_style(
+      style = list(
+        cell_text(weight = "bold")
+      ),
+      locations = cells_row_groups()
+    ) %>%
+    opt_table_lines(extent = "default") %>%
+    tab_options(
+      column_labels.border.top.color = "white",
+      column_labels.border.top.width = px(3),
+      column_labels.border.bottom.color = "black",
+      table_body.hlines.color = "white",
+      table.border.bottom.color = "white",
+      table.border.bottom.width = px(3)
+    )
+
+  # Export table into Dropbox and local folders ----------------------------------
+  date <- Sys.Date()
+  gtsave(rand_workout, paste("C:/Users/INGRAM_T/Dropbox/Daily_workout/", date + x,
+    "_session.png",
+    sep = ""
+  ))
+  gtsave(rand_workout, here("archive_workouts", paste(date + x, "_session.png",
+    sep = ""
+  )))
+  print(x)
+  x <- x + 1
+}
