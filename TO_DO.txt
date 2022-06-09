@@ -6,5 +6,8 @@ COMPLETE
 
 09JUNE2022:
 - function that runs the randomiser for next seven days and outputs seven files to Dropbox
+COMPLETE
+
+09JUNE2022:
 - add bum "additional variable"
 

@@ -1,5 +1,11 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 ### workout_randomiser
 Mixing up the workout (every time!)
+
 
 09 JUNE 2022:
 v1.0
@@ -30,3 +36,10 @@ This script outputs a random variation of exercises to always keep your sessions
 #### .png are exported locally and to my Dropbox location.
 + Dropbox was chosen so that I could instantly access the .png files from my mobile.
 + This line of code will need adjusting to match your directory.
+```{r}
+gtsave(rand_workout, paste("C:/Users/Me/Dropbox/Daily_workout/", date + x,
+    "_session.png",
+    sep = ""
+  ))
+```
+
