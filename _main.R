@@ -7,12 +7,9 @@ suppressPackageStartupMessages({
   library(styler)
   library(renv)
   library(gt)
-  library(webshot)
-  library(magick)
-  library(cowplot)
 })
 # lint("_main.R")
-style_file("_main.R")
+# style_file("_main.R")
 
 # Create lists of exercises ----------------------------------------------------
 quads <- c(
@@ -56,12 +53,14 @@ cable_bar_type <- c(
 )
 bar_or_dumb <- c("Bar", "Dumbbell")
 rest <- c("Thirty", "Forty-five", "Sixty")
+reps <- c("Six", "Eight", "Ten", "Twelve")
+sets <- c("Eight", "Ten", "Twelve")
 
 # Create table of exercises by body part ---------------------------------------
 body_parts <- list(
   quads, hamstrings, back, chest, shoulders, traps, biceps,
   triceps, curls, accessory_muscle, gradient, cable_bar_type,
-  bar_or_dumb, rest
+  bar_or_dumb, rest, reps, sets
 )
 table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
   t() %>%
@@ -69,7 +68,7 @@ table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
 headers <- c(
   "Quads", "Hamstrings", "Back", "Chest", "Shoulders", "Traps",
   "Biceps", "Triceps", "Curls", "Accessory muscle", "Gradient",
-  "Cable attachment", "Bar or dumbbell", "Rest"
+  "Cable attachment", "Bar or dumbbell", "Rest", "Reps", "Sets"
 )
 colnames(table_formation) <- headers
 
@@ -85,7 +84,7 @@ while (x < 8) {
         body_part
       ) ~ "3",
       grepl(
-        "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell|Rest",
+        "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell|Rest|Reps|Sets",
         body_part
       ) ~ "1"
     )) %>%
@@ -143,3 +142,4 @@ while (x < 8) {
   print(x)
   x <- x + 1
 }
+
