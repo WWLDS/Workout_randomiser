@@ -14,7 +14,7 @@ suppressPackageStartupMessages({
 # Create lists of exercises ----------------------------------------------------
 quads <- c(
   "Back squat", "Front squat", "Goblet squat", "Incline leg press",
-  "Hack squat", "Leg extension", "Weighted lunges", "Weighted step up"
+  "Hack squat - lean back", "Hack squat - lean forward", "Leg extension - double", "Leg extension - single", "Weighted lunges", "Weighted step up"
 )
 hamstrings <- c(
   "Good morning", "High foot incline leg press",
@@ -33,7 +33,7 @@ chest <- c(
 shoulders <- c(
   "Shoulder press", "Arnold press", "Side raises - upright",
   "Side raises - bent over", "Front raises", "Machine plate press",
-  "Cable side raise", "Cable front raise"
+  "Cable side raise", "Cable front raise", "Machine side raise", "Machine front raise"
 )
 traps <- c("Dumbbell shrug", "Barbell shrug", "Hexbar shrug")
 biceps <- c(
@@ -44,7 +44,6 @@ triceps <- c(
   "Cable - high start", "Cable - low start", "Dips",
   "Behind the head", "Skullcrusher", "Close grip bench press"
 )
-curls <- c("Plate", "Dumbbell")
 accessory_muscle <- c("Abs", "Obliques", "Calves")
 gradient <- c("Incline", "Flat", "Decline")
 cable_bar_type <- c(
