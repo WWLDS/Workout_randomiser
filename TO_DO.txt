@@ -11,3 +11,8 @@ COMPLETE
 09JUNE2022:
 - add bum "additional variable"
 
+20JUNE2022:
+- appears to skip one day (20th June skipped?). Maybe increase to 8 days?
+- remove 12 sets and 60 second rest. 6,8,10 sets only
+
+
