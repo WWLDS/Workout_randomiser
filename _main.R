@@ -1,12 +1,6 @@
 # Pkg load ---------------------------------------------------------------------
-suppressPackageStartupMessages({
-  library(tidyverse)
-  library(lubridate)
-  library(here)
-  library(lintr)
-  library(styler)
-  library(renv)
-  library(gt)
+suppressPackageStartupMessages({  
+  shelf(tidyverse, lubridate, here, lintr, styler, renv, gt)
 })
 # lint("_main.R")
 # style_file("_main.R")
@@ -14,26 +8,30 @@ suppressPackageStartupMessages({
 # Create lists of exercises ----------------------------------------------------
 quads <- c(
   "Back squat", "Front squat", "Goblet squat", "Incline leg press",
-  "Hack squat - lean back", "Hack squat - lean forward", "Leg extension - double", "Leg extension - single", "Weighted lunges", "Weighted step up"
+  "Hack squat - lean back", "Hack squat - lean forward", 
+  "Leg extension - double", "Leg extension - single", "Weighted lunges", 
+  "Weighted step up", "Lean back machine squat"
 )
 hamstrings <- c(
   "Good morning", "High foot incline leg press",
-  "Leg curls", "Romanian deadlift", "Back squat", "Tight bum"
+  "Leg curls", "Romanian deadlift", "Back squat", "Tight bum",
+  "Machine standing hamstring curl"
 )
 back <- c(
   "Deadlift", "Bent over rows", "T-bar lift", "Pull up", "Chin up",
   "One arm dumbbell row", "Machine pulldown",
-  "Machine row"
+  "Machine row", "Horizontal bench row"
 )
 chest <- c(
-  "Bench press", "Bench fly",
+  "Bench press", "Bench fly", "Horizontal machine fly",
   "Dumbbell bench press - alt grip", "Cable Fly",
   "Pec deck", "Machine press", "Dips"
 )
 shoulders <- c(
   "Shoulder press", "Arnold press", "Side raises - upright",
   "Side raises - bent over", "Front raises", "Machine plate press",
-  "Cable side raise", "Cable front raise", "Machine side raise", "Machine front raise"
+  "Cable side raise", "Cable front raise", "Machine side raise", 
+  "Machine front raise"
 )
 traps <- c("Dumbbell shrug", "Barbell shrug", "Hexbar shrug")
 biceps <- c(
@@ -50,9 +48,8 @@ cable_bar_type <- c(
   "Rope", "Triangle", "Handle", "Straight bar",
   "Long straight bar"
 )
-bar_or_dumb <- c("Bar", "Dumbbell")
 rest <- c("Thirty", "Forty-five", "Sixty")
-reps <- c("Six", "Eight", "Ten", "Twelve")
+reps <- c("Six", "Eight", "Ten")
 sets <- c("Six", "Eight", "Ten")
 
 # Create table of exercises by body part ---------------------------------------
@@ -66,8 +63,8 @@ table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
   as_tibble()
 headers <- c(
   "Quads", "Hamstrings", "Back", "Chest", "Shoulders", "Traps",
-  "Biceps", "Triceps", "Curls", "Accessory muscle", "Gradient",
-  "Cable attachment", "Bar or dumbbell", "Rest", "Reps", "Sets"
+  "Biceps", "Triceps", "Accessory muscle", "Gradient",
+  "Cable attachment", "Rest", "Reps", "Sets"
 )
 colnames(table_formation) <- headers
 
@@ -83,7 +80,7 @@ while (x < 8) {
         body_part
       ) ~ "3",
       grepl(
-        "Curls|Accessory muscle|Gradient|Cable attachment|Traps|Bar or dumbbell|Rest|Reps|Sets",
+        "Accessory muscle|Gradient|Cable attachment|Traps|Rest|Reps|Sets",
         body_part
       ) ~ "1"
     )) %>%
@@ -107,7 +104,7 @@ while (x < 8) {
       "Exercise 1" = `1`,
       "Exercise 2" = `2`,
       "Exercise 3" = `3`
-    ) %>%
+    ) #%>%
     gt(
       groupname_col = "Subheading",
       rowname_col = "Variable"
