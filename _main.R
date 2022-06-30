@@ -55,8 +55,7 @@ sets <- c("Six", "Eight", "Ten")
 # Create table of exercises by body part ---------------------------------------
 body_parts <- list(
   quads, hamstrings, back, chest, shoulders, traps, biceps,
-  triceps, curls, accessory_muscle, gradient, cable_bar_type,
-  bar_or_dumb, rest, reps, sets
+  triceps, accessory_muscle, gradient, rest, reps, sets
 )
 table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
   t() %>%
@@ -104,7 +103,7 @@ while (x < 8) {
       "Exercise 1" = `1`,
       "Exercise 2" = `2`,
       "Exercise 3" = `3`
-    ) #%>%
+    ) %>%
     gt(
       groupname_col = "Subheading",
       rowname_col = "Variable"
