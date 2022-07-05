@@ -125,9 +125,10 @@ while (x < 8) {
       table.border.bottom.width = px(3)
     )
 
-  # Export table into Dropbox and local folders ----------------------------------
+  # Export table into Dropbox and local folders --------------------------------
   date <- Sys.Date()
-  gtsave(rand_workout, paste("C:/Users/INGRAM_T/Dropbox/Daily_workout/", date + x,
+  gtsave(rand_workout, paste("C:/Users/INGRAM_T/Dropbox/Daily_workout/", 
+                             date + x,
     "_session.png",
     sep = ""
   ))
