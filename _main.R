@@ -55,7 +55,7 @@ sets <- c("Six", "Eight", "Ten")
 # Create table of exercises by body part ---------------------------------------
 body_parts <- list(
   quads, hamstrings, back, chest, shoulders, traps, biceps,
-  triceps, accessory_muscle, gradient, rest, reps, sets
+  triceps, accessory_muscle, gradient, cable_bar_type, rest, reps, sets
 )
 table_formation <- map_dfr(body_parts, ~ as_tibble(t(.))) %>%
   t() %>%
