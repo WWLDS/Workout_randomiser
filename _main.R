@@ -50,7 +50,7 @@ cable_bar_type <- c(
 )
 rest <- c("Thirty", "Forty-five", "Sixty")
 reps <- c("Six", "Eight", "Ten")
-sets <- c("Six", "Eight", "Ten")
+sets <- c("Five", "Six", "Seven")
 
 # Create table of exercises by body part ---------------------------------------
 body_parts <- list(
@@ -70,7 +70,7 @@ colnames(table_formation) <- headers
 # Gather variables then take random sample; output as gt object ----------------
 # Function outputs next seven days of WO sessions ----
 x <- 0
-while (x < 8) {
+while (x < 1) {
   rand_workout <- table_formation %>%
     gather(body_part, exercise) %>%
     mutate(freq = case_when(
